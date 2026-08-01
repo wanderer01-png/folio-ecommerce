@@ -125,6 +125,14 @@ export function CartView() {
           <p className="text-xl font-semibold">{formatPrice(subtotal)}</p>
         </div>
       </div>
+
+      <Button
+        size="lg"
+        nativeButton={false}
+        render={<Link href="/checkout" />}
+      >
+        Proceed to checkout
+      </Button>
     </div>
   );
 }
