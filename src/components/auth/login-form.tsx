@@ -1,7 +1,6 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -36,8 +34,12 @@ export function LoginForm({ callbackUrl }: { callbackUrl?: string }) {
       return;
     }
 
-    router.push(redirectTarget);
-    router.refresh();
+    // A full navigation (not router.push + router.refresh) guarantees the
+    // next page load reads the freshly-set session cookie. Chaining push
+    // with refresh is a known App Router race: refresh can re-fetch the
+    // *current* route before push's navigation commits, silently
+    // cancelling it.
+    window.location.href = redirectTarget;
   };
 
   return (

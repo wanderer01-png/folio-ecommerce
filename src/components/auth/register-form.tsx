@@ -48,8 +48,12 @@ export function RegisterForm() {
       return;
     }
 
-    router.push("/");
-    router.refresh();
+    // A full navigation (not router.push + router.refresh) guarantees the
+    // next page load reads the freshly-set session cookie. Chaining push
+    // with refresh is a known App Router race: refresh can re-fetch the
+    // *current* route before push's navigation commits, silently
+    // cancelling it.
+    window.location.href = "/";
   };
 
   return (
