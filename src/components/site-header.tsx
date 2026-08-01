@@ -26,6 +26,9 @@ export async function SiteHeader() {
 
           {session?.user ? (
             <>
+              <Link href="/account/orders" className="text-sm hover:underline">
+                Orders
+              </Link>
               {session.user.role === "ADMIN" && (
                 <Link href="/admin" className="text-sm hover:underline">
                   Admin
