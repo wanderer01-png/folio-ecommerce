@@ -1,0 +1,90 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 3 0 R /F2 10 0 R >> >> /MediaBox [0 0 612 792] /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 753 >>
+stream
+BT /F1 20 Tf 72 720 Td (Chapter One: The Beginning) Tj ET
+BT /F2 11 Tf 72 680 Td
+(This is a sample chapter used to demonstrate the in-app e-book reader. The text you are) Tj
+0 -16 Td (reading was generated specifically for this demo and is not excerpted from any published) Tj
+0 -16 Td (work.) Tj
+0 -24 Td () Tj
+0 -16 Td (In a real deployment, this file would be replaced by the actual manuscript a publisher or) Tj
+0 -16 Td (author uploads through the admin panel, in either PDF or EPUB format.) Tj
+0 -24 Td () Tj
+0 -16 Td (The reader supports pagination, and access to this file is only granted to customers who) Tj
+0 -16 Td (have purchased the e-book edition of this title through the storefront.) Tj
+0 -24 Td () Tj
+ET
+BT /F2 9 Tf 290 40 Td (1) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 3 0 R /F2 10 0 R >> >> /MediaBox [0 0 612 792] /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 665 >>
+stream
+BT /F1 20 Tf 72 720 Td (Chapter Two: The Reader) Tj ET
+BT /F2 11 Tf 72 680 Td
+(The second page of this sample demonstrates that multi-page navigation works correctly) Tj
+0 -16 Td (within the embedded viewer.) Tj
+0 -24 Td () Tj
+0 -16 Td (A production system would likely also track reading progress per user, allowing a reader) Tj
+0 -16 Td (to resume from where they left off across sessions and devices.) Tj
+0 -24 Td () Tj
+0 -16 Td (For this build, the reader focuses on the core mechanics: verifying purchase entitlement,) Tj
+0 -16 Td (then rendering the file inline without requiring a separate download step.) Tj
+0 -24 Td () Tj
+ET
+BT /F2 9 Tf 290 40 Td (2) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 3 0 R /F2 10 0 R >> >> /MediaBox [0 0 612 792] /Contents 9 0 R >>
+endobj
+9 0 obj
+<< /Length 269 >>
+stream
+BT /F1 20 Tf 72 720 Td (Chapter Three: Closing Notes) Tj ET
+BT /F2 11 Tf 72 680 Td
+(This concludes the sample content for this demonstration e-book.) Tj
+0 -24 Td () Tj
+0 -16 Td (Thank you for reviewing this project.) Tj
+0 -24 Td () Tj
+ET
+BT /F2 9 Tf 290 40 Td (3) Tj ET
+endstream
+endobj
+10 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000127 00000 n 
+0000000202 00000 n 
+0000000339 00000 n 
+0000001143 00000 n 
+0000001280 00000 n 
+0000001996 00000 n 
+0000002133 00000 n 
+0000002453 00000 n 
+trailer
+<< /Size 11 /Root 1 0 R >>
+startxref
+2524
+%%EOF

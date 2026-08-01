@@ -35,7 +35,8 @@ export function CartSync() {
     hasSyncedRef.current = true;
 
     const guestItems = state.items.map((item) => ({
-      productId: item.productId,
+      bookId: item.bookId,
+      format: item.format,
       quantity: item.quantity,
     }));
 

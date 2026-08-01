@@ -39,19 +39,22 @@ async function fulfillOrder(checkoutSession: Stripe.Checkout.Session) {
 
   const cart = await prisma.cart.findUnique({
     where: { userId },
-    include: { items: { include: { product: true } } },
+    include: { items: { include: { book: true } } },
   });
   if (!cart || cart.items.length === 0) return;
 
-  const total = cart.items.reduce(
-    (sum, item) => sum + Number(item.product.price) * item.quantity,
-    0,
-  );
+  const total = cart.items.reduce((sum, item) => {
+    const unitPrice =
+      item.format === "EBOOK" ? item.book.ebookPrice : item.book.hardcopyPrice;
+    return sum + Number(unitPrice) * item.quantity;
+  }, 0);
 
   const paymentIntentId =
     typeof checkoutSession.payment_intent === "string"
       ? checkoutSession.payment_intent
       : null;
+
+  const hasShipping = Boolean(checkoutSession.metadata?.address);
 
   await prisma.$transaction(async (tx) => {
     await tx.order.create({
@@ -59,30 +62,34 @@ async function fulfillOrder(checkoutSession: Stripe.Checkout.Session) {
         userId,
         status: "PAID",
         total,
-        shippingName: checkoutSession.metadata?.name ?? "",
-        shippingAddress: checkoutSession.metadata?.address ?? "",
-        shippingCity: checkoutSession.metadata?.city ?? "",
-        shippingState: checkoutSession.metadata?.state ?? "",
-        shippingZip: checkoutSession.metadata?.zip ?? "",
-        shippingCountry: checkoutSession.metadata?.country ?? "",
+        shippingName: hasShipping ? checkoutSession.metadata?.name : null,
+        shippingAddress: hasShipping ? checkoutSession.metadata?.address : null,
+        shippingCity: hasShipping ? checkoutSession.metadata?.city : null,
+        shippingState: hasShipping ? checkoutSession.metadata?.state : null,
+        shippingZip: hasShipping ? checkoutSession.metadata?.zip : null,
+        shippingCountry: hasShipping ? checkoutSession.metadata?.country : null,
         stripeCheckoutSessionId: checkoutSession.id,
         stripePaymentIntentId: paymentIntentId,
         items: {
           create: cart.items.map((item) => ({
-            productId: item.productId,
+            bookId: item.bookId,
             quantity: item.quantity,
-            price: item.product.price,
-            name: item.product.name,
+            format: item.format,
+            price:
+              item.format === "EBOOK" ? item.book.ebookPrice! : item.book.hardcopyPrice!,
+            title: item.book.title,
           })),
         },
       },
     });
 
     for (const item of cart.items) {
-      await tx.product.update({
-        where: { id: item.productId },
-        data: { stock: { decrement: item.quantity } },
-      });
+      if (item.format === "HARDCOPY") {
+        await tx.book.update({
+          where: { id: item.bookId },
+          data: { hardcopyStock: { decrement: item.quantity } },
+        });
+      }
     }
 
     await tx.cartItem.deleteMany({ where: { cartId: cart.id } });

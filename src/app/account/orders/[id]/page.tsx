@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { OrderTracker } from "@/components/account/order-tracker";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { getUserOrderById } from "@/lib/orders";
 import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Order Detail | Ecommerce",
+  title: "Order Detail | Folio",
 };
 
 interface AccountOrderDetailPageProps {
@@ -29,6 +32,8 @@ export default async function AccountOrderDetailPage({
     notFound();
   }
 
+  const hasShipping = Boolean(order.shippingAddress);
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <h1 className="mb-6 text-2xl font-semibold">Order #{order.id.slice(-8)}</h1>
@@ -37,15 +42,17 @@ export default async function AccountOrderDetailPage({
         <OrderTracker status={order.status} />
       </div>
 
-      <div className="mb-6">
-        <h2 className="mb-2 font-medium">Shipping address</h2>
-        <p className="text-sm">{order.shippingName}</p>
-        <p className="text-sm">{order.shippingAddress}</p>
-        <p className="text-sm">
-          {order.shippingCity}, {order.shippingState} {order.shippingZip}
-        </p>
-        <p className="text-sm">{order.shippingCountry}</p>
-      </div>
+      {hasShipping && (
+        <div className="mb-6">
+          <h2 className="mb-2 font-medium">Shipping address</h2>
+          <p className="text-sm">{order.shippingName}</p>
+          <p className="text-sm">{order.shippingAddress}</p>
+          <p className="text-sm">
+            {order.shippingCity}, {order.shippingState} {order.shippingZip}
+          </p>
+          <p className="text-sm">{order.shippingCountry}</p>
+        </div>
+      )}
 
       <div>
         <h2 className="mb-2 font-medium">Items</h2>
@@ -53,12 +60,31 @@ export default async function AccountOrderDetailPage({
           {order.items.map((item) => (
             <div key={item.id} className="flex items-center justify-between p-3">
               <div>
-                <p className="text-sm font-medium">{item.name}</p>
-                <p className="text-muted-foreground text-sm">Qty {item.quantity}</p>
+                <p className="text-sm font-medium">{item.title}</p>
+                <div className="mt-1 flex items-center gap-2">
+                  <Badge variant="secondary" className="text-xs">
+                    {item.format === "EBOOK" ? "E-book" : "Hardcopy"}
+                  </Badge>
+                  <span className="text-muted-foreground text-sm">
+                    Qty {item.quantity}
+                  </span>
+                </div>
               </div>
-              <p className="text-sm font-medium">
-                {formatPrice(Number(item.price) * item.quantity)}
-              </p>
+              <div className="flex items-center gap-3">
+                <p className="text-sm font-medium">
+                  {formatPrice(Number(item.price) * item.quantity)}
+                </p>
+                {item.format === "EBOOK" && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    nativeButton={false}
+                    render={<Link href={`/library/${item.bookId}/read`} />}
+                  >
+                    Read now
+                  </Button>
+                )}
+              </div>
             </div>
           ))}
           <div className="flex items-center justify-between p-3 font-semibold">

@@ -76,28 +76,43 @@ model VerificationToken {
 
 // ─── Catalog ─────────────────────────────────────────────────────────────
 
-model Category {
+model Genre {
   id   String @id @default(cuid())
   name String @unique
   slug String @unique
 
-  products Product[]
+  books Book[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Product {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  description String   @db.Text
-  price       Decimal  @db.Decimal(10, 2)
-  images      String[]
-  stock       Int      @default(0)
+enum EbookFileType {
+  PDF
+  EPUB
+}
 
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+model Book {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  author      String
+  isbn        String?  @unique
+  description String   @db.Text
+  coverImages String[]
+
+  // At least one of these two must be set — enforced at the application
+  // layer, not the DB, since Prisma has no cross-column CHECK constraint.
+  ebookPrice    Decimal? @db.Decimal(10, 2)
+  hardcopyPrice Decimal? @db.Decimal(10, 2)
+  // Only meaningful for the hardcopy format — ebooks are an infinite digital good.
+  hardcopyStock Int      @default(0)
+
+  ebookFileUrl  String?
+  ebookFileType EbookFileType?
+
+  genreId String
+  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Restrict)
 
   cartItems  CartItem[]
   orderItems OrderItem[]
@@ -105,10 +120,15 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([categoryId])
+  @@index([genreId])
 }
 
 // ─── Cart ────────────────────────────────────────────────────────────────
+
+enum PurchaseFormat {
+  EBOOK
+  HARDCOPY
+}
 
 model Cart {
   id     String @id @default(cuid())
@@ -122,19 +142,22 @@ model Cart {
 }
 
 model CartItem {
-  id       String @id @default(cuid())
-  quantity Int    @default(1)
+  id       String         @id @default(cuid())
+  // Always 1 for EBOOK (digital access isn't bought in multiples);
+  // enforced in the cart store / server actions, not the schema.
+  quantity Int            @default(1)
+  format   PurchaseFormat
 
   cartId String
   cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
-  productId String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  bookId String
+  book   Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([cartId, productId])
+  @@unique([cartId, bookId, format])
 }
 
 // ─── Orders ──────────────────────────────────────────────────────────────
@@ -157,13 +180,13 @@ model Order {
 
   items OrderItem[]
 
-  // Shipping details captured at checkout
-  shippingName    String
-  shippingAddress String
-  shippingCity    String
-  shippingState   String
-  shippingZip     String
-  shippingCountry String
+  // Null when the order contains only EBOOK items — nothing ships.
+  shippingName    String?
+  shippingAddress String?
+  shippingCity    String?
+  shippingState   String?
+  shippingZip     String?
+  shippingCountry String?
 
   // Stripe reconciliation
   stripeCheckoutSessionId String? @unique
@@ -176,17 +199,18 @@ model Order {
 }
 
 model OrderItem {
-  id       String  @id @default(cuid())
+  id       String         @id @default(cuid())
   quantity Int
-  // Snapshot of price/name at time of purchase — product data may change later.
-  price    Decimal @db.Decimal(10, 2)
-  name     String
+  // Snapshot of price/title at time of purchase — book data may change later.
+  price    Decimal        @db.Decimal(10, 2)
+  title    String
+  format   PurchaseFormat
 
   orderId String
   order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
-  productId String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  bookId String
+  book   Book   @relation(fields: [bookId], references: [id], onDelete: Restrict)
 
   @@index([orderId])
 }

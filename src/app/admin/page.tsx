@@ -7,7 +7,7 @@ import { getDashboardStats } from "@/lib/admin";
 import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard | Ecommerce",
+  title: "Admin Dashboard | Folio",
 };
 
 export default async function AdminDashboardPage() {
@@ -41,11 +41,11 @@ export default async function AdminDashboardPage() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-muted-foreground text-sm font-normal">
-              Products
+              Books
             </CardTitle>
           </CardHeader>
           <CardContent className="text-2xl font-semibold">
-            {stats.productCount}
+            {stats.bookCount}
           </CardContent>
         </Card>
         <Card>
@@ -87,23 +87,23 @@ export default async function AdminDashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Low stock</CardTitle>
+            <CardTitle>Low stock (hardcopy)</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
-            {stats.lowStockProducts.length === 0 && (
+            {stats.lowStockBooks.length === 0 && (
               <p className="text-muted-foreground text-sm">
-                No products are low on stock.
+                No books are low on hardcopy stock.
               </p>
             )}
-            {stats.lowStockProducts.map((product) => (
+            {stats.lowStockBooks.map((book) => (
               <Link
-                key={product.id}
-                href={`/admin/products/${product.id}/edit`}
+                key={book.id}
+                href={`/admin/books/${book.id}/edit`}
                 className="flex items-center justify-between text-sm hover:underline"
               >
-                <span>{product.name}</span>
-                <Badge variant={product.stock === 0 ? "destructive" : "secondary"}>
-                  {product.stock} left
+                <span>{book.title}</span>
+                <Badge variant={book.hardcopyStock === 0 ? "destructive" : "secondary"}>
+                  {book.hardcopyStock} left
                 </Badge>
               </Link>
             ))}

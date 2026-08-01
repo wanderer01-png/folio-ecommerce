@@ -1,32 +1,32 @@
 import Link from "next/link";
 
-import { ProductGrid } from "@/components/product/product-grid";
+import { BookGrid } from "@/components/book/book-grid";
 import { Button } from "@/components/ui/button";
-import { getProducts } from "@/lib/products";
+import { getBooks } from "@/lib/books";
 
 export default async function HomePage() {
-  const { products } = await getProducts({ page: 1 });
+  const { books } = await getBooks({ page: 1 });
 
   return (
     <div>
       <section className="border-b">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-4 px-4 py-16">
-          <h1 className="text-4xl font-bold tracking-tight">
-            Shop the latest arrivals
+          <h1 className="font-heading text-4xl font-bold tracking-tight">
+            Read anywhere. Own it forever.
           </h1>
           <p className="text-muted-foreground max-w-xl">
-            Quality electronics, apparel, home goods, and books — all in one
-            place.
+            Every title is available as an instant e-book or a hardcopy
+            delivered to your door — sometimes both, always your choice.
           </p>
-          <Button size="lg" nativeButton={false} render={<Link href="/products" />}>
-            Browse products
+          <Button size="lg" nativeButton={false} render={<Link href="/books" />}>
+            Browse books
           </Button>
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-12">
-        <h2 className="mb-6 text-2xl font-semibold">Featured products</h2>
-        <ProductGrid products={products} />
+        <h2 className="font-heading mb-6 text-2xl font-semibold">Featured books</h2>
+        <BookGrid books={books} />
       </section>
     </div>
   );

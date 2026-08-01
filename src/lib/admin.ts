@@ -6,71 +6,79 @@ const PAGE_SIZE = 10;
 const LOW_STOCK_THRESHOLD = 10;
 
 export async function getDashboardStats() {
-  const [revenueResult, orderCount, productCount, customerCount, recentOrders, lowStockProducts] =
+  const [revenueResult, orderCount, bookCount, customerCount, recentOrders, lowStockBooks] =
     await Promise.all([
       prisma.order.aggregate({
         where: { status: { in: ["PAID", "SHIPPED", "DELIVERED"] } },
         _sum: { total: true },
       }),
       prisma.order.count(),
-      prisma.product.count(),
+      prisma.book.count(),
       prisma.user.count({ where: { role: "CUSTOMER" } }),
       prisma.order.findMany({
         take: 5,
         orderBy: { createdAt: "desc" },
         include: { user: { select: { name: true, email: true } } },
       }),
-      prisma.product.findMany({
-        where: { stock: { lt: LOW_STOCK_THRESHOLD } },
-        orderBy: { stock: "asc" },
+      prisma.book.findMany({
+        where: {
+          hardcopyPrice: { not: null },
+          hardcopyStock: { lt: LOW_STOCK_THRESHOLD },
+        },
+        orderBy: { hardcopyStock: "asc" },
         take: 5,
-        select: { id: true, name: true, slug: true, stock: true },
+        select: { id: true, title: true, slug: true, hardcopyStock: true },
       }),
     ]);
 
   return {
     totalRevenue: revenueResult._sum.total ?? 0,
     orderCount,
-    productCount,
+    bookCount,
     customerCount,
     recentOrders,
-    lowStockProducts,
+    lowStockBooks,
   };
 }
 
-export interface AdminProductFilters {
+export interface AdminBookFilters {
   q?: string;
   page?: number;
 }
 
-export async function getAdminProducts(filters: AdminProductFilters = {}) {
+export async function getAdminBooks(filters: AdminBookFilters = {}) {
   const page = filters.page && filters.page > 0 ? filters.page : 1;
 
-  const where: Prisma.ProductWhereInput = filters.q
-    ? { name: { contains: filters.q, mode: "insensitive" as const } }
+  const where: Prisma.BookWhereInput = filters.q
+    ? {
+        OR: [
+          { title: { contains: filters.q, mode: "insensitive" as const } },
+          { author: { contains: filters.q, mode: "insensitive" as const } },
+        ],
+      }
     : {};
 
-  const [products, total] = await Promise.all([
-    prisma.product.findMany({
+  const [books, total] = await Promise.all([
+    prisma.book.findMany({
       where,
-      include: { category: true },
+      include: { genre: true },
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
     }),
-    prisma.product.count({ where }),
+    prisma.book.count({ where }),
   ]);
 
   return {
-    products,
+    books,
     total,
     page,
     totalPages: Math.max(1, Math.ceil(total / PAGE_SIZE)),
   };
 }
 
-export async function getAdminProductById(id: string) {
-  return prisma.product.findUnique({ where: { id } });
+export async function getAdminBookById(id: string) {
+  return prisma.book.findUnique({ where: { id } });
 }
 
 export interface AdminOrderFilters {
