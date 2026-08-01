@@ -43,19 +43,26 @@ export async function createCheckoutSession(formData: FormData) {
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
+  // Stripe requires absolute URLs for product images — our cover art is
+  // stored as same-origin paths (e.g. "/covers/foo.svg"), so those need
+  // resolving against appUrl. Anything already absolute passes through.
+  const resolveImageUrl = (path: string) =>
+    /^https?:\/\//.test(path) ? path : `${appUrl}${path}`;
+
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "payment",
     payment_method_types: ["card"],
     line_items: cart.items.map((item) => {
       const unitPrice =
         item.format === "EBOOK" ? item.book.ebookPrice : item.book.hardcopyPrice;
+      const coverImage = item.book.coverImages[0];
 
       return {
         price_data: {
           currency: "usd",
           product_data: {
             name: `${item.book.title} (${item.format === "EBOOK" ? "E-book" : "Hardcopy"})`,
-            images: item.book.coverImages.slice(0, 1),
+            images: coverImage ? [resolveImageUrl(coverImage)] : [],
           },
           unit_amount: Math.round(Number(unitPrice) * 100),
         },
