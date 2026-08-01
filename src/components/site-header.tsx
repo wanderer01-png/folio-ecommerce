@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { CartIndicator } from "@/components/cart/cart-indicator";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 
@@ -23,6 +24,7 @@ export async function SiteHeader() {
           </Link>
 
           <CartIndicator />
+          <ThemeToggle />
 
           {session?.user ? (
             <>
