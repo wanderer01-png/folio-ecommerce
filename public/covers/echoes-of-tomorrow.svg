@@ -1,0 +1,7 @@
+<svg width="500" height="750" viewBox="0 0 500 750" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="750" fill="#3a2f4a" />
+  <rect x="24" y="24" width="452" height="702" fill="none" stroke="#e3d8ea" stroke-opacity="0.5" stroke-width="1.5" />
+  <line x1="210" y1="279" x2="290" y2="279" stroke="#e3d8ea" stroke-width="1.5" />
+  <text x="250" y="339" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="40" fill="#e3d8ea" font-weight="600"><tspan x="250" dy="0">Echoes of</tspan><tspan x="250" dy="50">Tomorrow</tspan></text>
+  <text x="250" y="445" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#e3d8ea" fill-opacity="0.85" letter-spacing="1">Jonas Weber</text>
+</svg>

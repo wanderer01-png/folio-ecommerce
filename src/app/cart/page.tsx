@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { CartView } from "@/components/cart/cart-view";
 
 export const metadata: Metadata = {
-  title: "Cart | Ecommerce",
+  title: "Cart | Folio",
 };
 
 export default function CartPage() {

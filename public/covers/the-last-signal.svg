@@ -1,0 +1,7 @@
+<svg width="500" height="750" viewBox="0 0 500 750" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="750" fill="#1f3a4a" />
+  <rect x="24" y="24" width="452" height="702" fill="none" stroke="#cfe3ea" stroke-opacity="0.5" stroke-width="1.5" />
+  <line x1="210" y1="311.65" x2="290" y2="311.65" stroke="#cfe3ea" stroke-width="1.5" />
+  <text x="250" y="365.65" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="#cfe3ea" font-weight="600"><tspan x="250" dy="0">The Last Signal</tspan></text>
+  <text x="250" y="413.25" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#cfe3ea" fill-opacity="0.85" letter-spacing="1">Priya Nair</text>
+</svg>

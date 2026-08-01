@@ -21,7 +21,7 @@ const books = [
     isbn: "978-0-000-00001-1",
     description:
       "A sweeping family saga across three generations of orchard keepers, tracing how one small betrayal ripples through decades of harvests and homecomings.",
-    coverImages: ["https://picsum.photos/seed/glassorchard/500/750"],
+    coverImages: ["/covers/the-glass-orchard.svg"],
     ebookPrice: "9.99",
     hardcopyPrice: "18.99",
     hardcopyStock: 40,
@@ -36,7 +36,7 @@ const books = [
     isbn: "978-0-000-00002-8",
     description:
       "A widowed botanist retreats to her late husband's overgrown estate and slowly rebuilds both the garden and her own sense of purpose.",
-    coverImages: ["https://picsum.photos/seed/quietgarden/500/750"],
+    coverImages: ["/covers/the-quiet-garden.svg"],
     ebookPrice: "8.99",
     hardcopyPrice: "16.99",
     hardcopyStock: 55,
@@ -51,7 +51,7 @@ const books = [
     isbn: "978-0-000-00003-5",
     description:
       "When a detective returns to her hometown to investigate a decades-old disappearance, she finds the whole town has been keeping the same secret.",
-    coverImages: ["https://picsum.photos/seed/carraway/500/750"],
+    coverImages: ["/covers/midnight-in-carraway.svg"],
     ebookPrice: "10.99",
     hardcopyPrice: "19.99",
     hardcopyStock: 35,
@@ -66,7 +66,7 @@ const books = [
     isbn: "978-0-000-00004-2",
     description:
       "A deep-space communications officer picks up a transmission that shouldn't exist — one broadcasting from a colony ship that was never launched.",
-    coverImages: ["https://picsum.photos/seed/lastsignal/500/750"],
+    coverImages: ["/covers/the-last-signal.svg"],
     ebookPrice: "11.99",
     hardcopyPrice: null,
     hardcopyStock: 0,
@@ -81,7 +81,7 @@ const books = [
     isbn: "978-0-000-00005-9",
     description:
       "In a city run by aging automatons, a young engineer discovers the machines have started keeping secrets of their own.",
-    coverImages: ["https://picsum.photos/seed/silentmech/500/750"],
+    coverImages: ["/covers/silent-mechanics.svg"],
     ebookPrice: "10.49",
     hardcopyPrice: "21.99",
     hardcopyStock: 28,
@@ -96,7 +96,7 @@ const books = [
     isbn: "978-0-000-00006-6",
     description:
       "A physicist's experiment in memory transfer starts receiving messages from a version of herself that hasn't been born yet.",
-    coverImages: ["https://picsum.photos/seed/echoestomorrow/500/750"],
+    coverImages: ["/covers/echoes-of-tomorrow.svg"],
     ebookPrice: "9.49",
     hardcopyPrice: null,
     hardcopyStock: 0,
@@ -111,7 +111,7 @@ const books = [
     isbn: "978-0-000-00007-3",
     description:
       "The exiled heir to a burned kingdom must choose between reclaiming her throne and protecting the rebellion that raised her.",
-    coverImages: ["https://picsum.photos/seed/crownembers/500/750"],
+    coverImages: ["/covers/crown-of-embers.svg"],
     ebookPrice: "10.99",
     hardcopyPrice: "22.99",
     hardcopyStock: 32,
@@ -126,7 +126,7 @@ const books = [
     isbn: "978-0-000-00008-0",
     description:
       "A palace accountant discovers the kingdom's entire treasury has been a centuries-long fiction — and the truth could topple the crown.",
-    coverImages: ["https://picsum.photos/seed/ledgerkings/500/750"],
+    coverImages: ["/covers/the-ledger-of-kings.svg"],
     ebookPrice: "11.49",
     hardcopyPrice: "23.99",
     hardcopyStock: 24,
@@ -141,7 +141,7 @@ const books = [
     isbn: "978-0-000-00009-7",
     description:
       "The memoir of a surgeon who, after losing her hands in an accident, spent a decade learning to practice medicine again in an entirely new way.",
-    coverImages: ["https://picsum.photos/seed/liferebuilt/500/750"],
+    coverImages: ["/covers/a-life-rebuilt.svg"],
     ebookPrice: null,
     hardcopyPrice: "24.99",
     hardcopyStock: 20,
@@ -156,7 +156,7 @@ const books = [
     isbn: "978-0-000-00010-3",
     description:
       "Drawing on interviews with over sixty founders, this book maps the specific decision-making habits that separate durable companies from flame-outs.",
-    coverImages: ["https://picsum.photos/seed/foundersmindset/500/750"],
+    coverImages: ["/covers/the-founders-mindset.svg"],
     ebookPrice: "14.99",
     hardcopyPrice: "27.99",
     hardcopyStock: 45,
@@ -171,7 +171,7 @@ const books = [
     isbn: "978-0-000-00011-0",
     description:
       "A practical field guide to building operating systems for fast-growing teams, from a former operator at three unicorn startups.",
-    coverImages: ["https://picsum.photos/seed/disciplinedesign/500/750"],
+    coverImages: ["/covers/discipline-and-design.svg"],
     ebookPrice: null,
     hardcopyPrice: "26.99",
     hardcopyStock: 18,
@@ -186,7 +186,7 @@ const books = [
     isbn: "978-0-000-00012-7",
     description:
       "A no-nonsense system for reclaiming attention in a distracted world, built around small daily commitments rather than willpower.",
-    coverImages: ["https://picsum.photos/seed/atomicfocus/500/750"],
+    coverImages: ["/covers/atomic-focus.svg"],
     ebookPrice: "12.99",
     hardcopyPrice: "23.99",
     hardcopyStock: 60,
@@ -213,7 +213,9 @@ async function main() {
 
     await prisma.book.upsert({
       where: { slug: book.slug },
-      update: {},
+      update: {
+        coverImages: [...bookData.coverImages],
+      },
       create: {
         ...bookData,
         coverImages: [...bookData.coverImages],

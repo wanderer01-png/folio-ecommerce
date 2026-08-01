@@ -9,7 +9,7 @@ import { auth } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
 
 export const metadata: Metadata = {
-  title: "Order confirmed | Ecommerce",
+  title: "Order confirmed | Folio",
 };
 
 interface CheckoutSuccessPageProps {

@@ -1,0 +1,7 @@
+<svg width="500" height="750" viewBox="0 0 500 750" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="750" fill="#3a3530" />
+  <rect x="24" y="24" width="452" height="702" fill="none" stroke="#e8dcc8" stroke-opacity="0.5" stroke-width="1.5" />
+  <line x1="210" y1="304" x2="290" y2="304" stroke="#e8dcc8" stroke-width="1.5" />
+  <text x="250" y="364" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="40" fill="#e8dcc8" font-weight="600"><tspan x="250" dy="0">A Life Rebuilt</tspan></text>
+  <text x="250" y="420" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="18" fill="#e8dcc8" fill-opacity="0.85" letter-spacing="1">Margaret Cole</text>
+</svg>

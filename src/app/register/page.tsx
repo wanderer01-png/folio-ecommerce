@@ -4,7 +4,7 @@ import Link from "next/link";
 import { RegisterForm } from "@/components/auth/register-form";
 
 export const metadata: Metadata = {
-  title: "Create account | Ecommerce",
+  title: "Create account | Folio",
 };
 
 export default function RegisterPage() {

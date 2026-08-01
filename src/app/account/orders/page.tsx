@@ -9,7 +9,7 @@ import { getUserOrders } from "@/lib/orders";
 import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Your Orders | Ecommerce",
+  title: "Your Orders | Folio",
 };
 
 interface AccountOrdersPageProps {

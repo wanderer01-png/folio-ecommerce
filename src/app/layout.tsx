@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { CartSync } from "@/components/cart/cart-sync";
 import { Providers } from "@/components/providers";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
           <CartSync />
           <SiteHeader />
           <main className="flex-1">{children}</main>
+          <SiteFooter />
           <Toaster />
         </Providers>
       </body>
