@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 
+import { SignOutButton } from "@/components/auth/sign-out-button";
 import { CartIndicator } from "@/components/cart/cart-indicator";
 import { Button } from "@/components/ui/button";
-import { auth, signOut } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 
 export async function SiteHeader() {
   const session = await auth();
@@ -30,16 +31,7 @@ export async function SiteHeader() {
                   Admin
                 </Link>
               )}
-              <form
-                action={async () => {
-                  "use server";
-                  await signOut({ redirectTo: "/" });
-                }}
-              >
-                <Button type="submit" variant="outline" size="sm">
-                  Sign out
-                </Button>
-              </form>
+              <SignOutButton />
             </>
           ) : (
             <Button size="sm" nativeButton={false} render={<Link href="/login" />}>

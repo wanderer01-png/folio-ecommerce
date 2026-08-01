@@ -8,32 +8,42 @@ import { useCartStore } from "@/store/cart-store";
 
 export function CartSync() {
   const { status } = useSession();
-  const setItems = useCartStore((state) => state.setItems);
+  // Guards against firing twice within the same mount (e.g. React Strict
+  // Mode's double effect invocation in dev). The persisted
+  // `hasHydratedFromServer` flag on the store is what makes this correct
+  // across page reloads, where this ref itself resets to false.
   const hasSyncedRef = useRef(false);
-  const prevStatusRef = useRef(status);
 
   useEffect(() => {
-    if (status === "authenticated" && !hasSyncedRef.current) {
-      hasSyncedRef.current = true;
+    if (status === "loading") return;
 
-      const guestItems = useCartStore.getState().items.map((item) => ({
-        productId: item.productId,
-        quantity: item.quantity,
-      }));
+    const state = useCartStore.getState();
 
-      const sync =
-        guestItems.length > 0 ? mergeGuestCart(guestItems) : getServerCart();
-
-      sync.then(setItems);
-    }
-
-    if (prevStatusRef.current === "authenticated" && status === "unauthenticated") {
-      useCartStore.getState().clearCart();
+    if (status === "unauthenticated") {
+      // Cart data tagged as server-hydrated but the session is gone means
+      // this is leftover from a previous signed-in user on this device —
+      // clear it so it doesn't leak into the next guest/user's view.
+      if (state.hasHydratedFromServer) {
+        state.clearCart();
+      }
       hasSyncedRef.current = false;
+      return;
     }
 
-    prevStatusRef.current = status;
-  }, [status, setItems]);
+    // status === "authenticated"
+    if (state.hasHydratedFromServer || hasSyncedRef.current) return;
+    hasSyncedRef.current = true;
+
+    const guestItems = state.items.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+    }));
+
+    const sync =
+      guestItems.length > 0 ? mergeGuestCart(guestItems) : getServerCart();
+
+    sync.then((items) => useCartStore.getState().hydrateFromServer(items));
+  }, [status]);
 
   return null;
 }
