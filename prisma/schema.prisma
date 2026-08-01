@@ -165,9 +165,9 @@ model Order {
   shippingZip     String
   shippingCountry String
 
-  // Razorpay reconciliation
-  razorpayOrderId   String? @unique
-  razorpayPaymentId String? @unique
+  // Stripe reconciliation
+  stripeCheckoutSessionId String? @unique
+  stripePaymentIntentId   String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
