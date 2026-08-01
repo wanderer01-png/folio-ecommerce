@@ -37,8 +37,8 @@ export default async function AccountOrdersPage({
           <p className="text-muted-foreground">
             You haven&apos;t placed any orders yet.
           </p>
-          <Button nativeButton={false} render={<Link href="/products" />}>
-            Browse products
+          <Button nativeButton={false} render={<Link href="/books" />}>
+            Browse books
           </Button>
         </div>
       ) : (

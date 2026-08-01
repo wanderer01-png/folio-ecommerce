@@ -43,7 +43,7 @@ export default async function CheckoutSuccessPage({
       <p className="text-muted-foreground">
         Thank you for your order. You can track its status from your account.
       </p>
-      <Button nativeButton={false} render={<Link href="/products" />}>
+      <Button nativeButton={false} render={<Link href="/books" />}>
         Continue shopping
       </Button>
     </div>
