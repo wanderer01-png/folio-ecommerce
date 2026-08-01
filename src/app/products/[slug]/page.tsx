@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+import { AddToCartButton } from "@/components/cart/add-to-cart-button";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { getProductBySlug } from "@/lib/products";
 import { formatPrice } from "@/lib/utils";
 
@@ -74,9 +74,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </p>
           )}
 
-          <Button size="lg" disabled={isOutOfStock} className="w-fit">
-            Add to cart
-          </Button>
+          <AddToCartButton
+            product={{
+              id: product.id,
+              slug: product.slug,
+              name: product.name,
+              image:
+                product.images[0] ??
+                "https://picsum.photos/seed/placeholder/600/600",
+              price: product.price.toString(),
+              stock: product.stock,
+            }}
+          />
         </div>
       </div>
     </div>

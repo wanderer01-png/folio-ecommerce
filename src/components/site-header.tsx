@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 
+import { CartIndicator } from "@/components/cart/cart-indicator";
 import { Button } from "@/components/ui/button";
 import { auth, signOut } from "@/lib/auth";
 
@@ -19,6 +20,8 @@ export async function SiteHeader() {
           <Link href="/products" className="text-sm hover:underline">
             Products
           </Link>
+
+          <CartIndicator />
 
           {session?.user ? (
             <>
